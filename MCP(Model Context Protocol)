@@ -1,6 +1,6 @@
 MCP(Model Context Protocol)
 
-connecting Claude with external tools/data sources right
+connecting Claude with external tools/data sources(Kubernetes, GitHub, Slack, etc.)
 
 MCP (Model Context Protocol) is an open standard by Anthropic that lets AI models like Claude connect to external tools and data sources 
 (Kubernetes, GitHub, Slack, etc.) through one unified interface. Instead of custom integrations per tool, you plug in an MCP server 
