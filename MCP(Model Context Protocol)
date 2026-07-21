@@ -24,3 +24,82 @@ Good instinct — they're related but not the same thing.
 |                          | endpoints, parsing)                          | what tools are available and how to call them        |
 +--------------------------+----------------------------------------------+------------------------------------------------------+
 
+Here's the full free-tier setup:
+
+Step 1: Install Claude Desktop
+
+• Download from claude.ai/download (free, no paid plan needed)
+• Sign in with your existing Claude account
+
+Step 2: Verify kubectl access first
+
+aws eks update-kubeconfig --name <your-cluster-name> --region us-east-2
+kubectl get pods -n <some-namespace>
+
+Confirm this works before adding MCP — if kubectl fails, MCP will fail too.
+
+Step 3 (Recommended for prod safety): Create a read-only ServiceAccount
+Since you manage prod EKS clusters, don't point this at your full admin kubeconfig. Create a scoped one:
+
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: claude-readonly
+  namespace: default
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: claude-viewer
+rules:
+- apiGroups: [""]
+  resources: ["pods", "services", "events", "pods/log"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["apps"]
+  resources: ["deployments", "replicasets"]
+  verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: claude-viewer-binding
+subjects:
+- kind: ServiceAccount
+  name: claude-readonly
+  namespace: default
+roleRef:
+  kind: ClusterRole
+  name: claude-viewer
+  apiGroup: rbac.authorization.k8s.io
+
+Apply it, then generate a kubeconfig scoped to that ServiceAccount token (I can walk you through this part separately if needed — it involves extracting the token and building a minimal kubeconfig file).
+
+Step 4: Install the MCP server via Claude Desktop config
+
+Find your config file:
+
+• macOS: ~/Library/Application Support/Claude/claude_desktop_config.json
+• Windows: %APPDATA%\Claude\claude_desktop_config.json
+• Linux: ~/.config/Claude/claude_desktop_config.json
+
+Add:
+
+{
+  "mcpServers": {
+    "kubernetes": {
+      "command": "npx",
+      "args": ["-y", "kubernetes-mcp-server@latest", "--read-only"],
+      "env": {
+        "KUBECONFIG": "/absolute/path/to/eks-readonly.kubeconfig"
+      }
+    }
+  }
+}
+
+Step 5: Restart Claude Desktop
+Fully quit and reopen. It'll detect the server on startup.
+
+Step 6: Test it
+Ask Claude: "List all namespaces in my cluster" or "Show me pods in CrashLoopBackOff across all namespaces."
+
+Want help with the ServiceAccount → kubeconfig extraction part (Step 3), since that's usually the fiddly bit?
