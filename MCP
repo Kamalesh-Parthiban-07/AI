@@ -1,0 +1,22 @@
+MCP (Model Context Protocol) is an open standard by Anthropic that lets AI models like Claude connect to external tools and data sources 
+(Kubernetes, GitHub, Slack, etc.) through one unified interface. Instead of custom integrations per tool, you plug in an MCP server 
+once and Claude can read/act on that system directly.
+
+Orchestrated comparison framework for technical concepts
+
+Good instinct — they're related but not the same thing.
+
++--------------------------+----------------------------------------------+------------------------------------------------------+
+|                          | API                                          | MCP                                                  |
++--------------------------+----------------------------------------------+------------------------------------------------------+
+| What it is               | A contract for how any two pieces of         | A specific standard for how an AI model talks        |
+|                          | software talk to each other                  | to tools/data sources                                |
++--------------------------+----------------------------------------------+------------------------------------------------------+
+| Who defines the format   | Each API has its own request/response        | One consistent format — the AI just discovers        |
+|                          | shape (you read docs, write custom code      | and calls "tools" the same way everywhere            |
+|                          | per API)                                     |                                                      |
++--------------------------+----------------------------------------------+------------------------------------------------------+
+| Integration effort       | Custom code needed per API (auth,            | Connect once via MCP server; Claude auto-discovers   |
+|                          | endpoints, parsing)                          | what tools are available and how to call them        |
++--------------------------+----------------------------------------------+------------------------------------------------------+
+
