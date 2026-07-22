@@ -1,0 +1,74 @@
+"LLM-first" is a design philosophy — the same pattern as "API-first" or "mobile-first," but for AI. Instead of building a system the 
+traditional way and bolting an LLM on as a feature afterward, you architect the system around the LLM as the primary interface or 
+reasoning engine from the start.
+
+What it means in practice:
+
+• Traditional approach:
+  Build a dashboard/CLI/pipeline → later add a chatbot on top
+  that can answer questions about it.
+
+• LLM-first approach:
+  Design the system so the LLM is the primary way people interact
+  with it — natural language in, structured actions out — and the
+  underlying APIs/data are built to be LLM-consumable from day one
+  (clean schemas, good tool definitions, structured logs) rather
+  than retrofitted.
+
+In a DevOps context, LLM-first would look like:
+
+• Instead of "here's a Grafana dashboard, and also a chatbot that
+  can summarize it," you design your observability data to be
+  queryable by an LLM agent from the start — structured,
+  well-labeled metrics/logs it can reason over directly.
+
+• Runbooks written as LLM-executable tool definitions (with
+  guardrails) rather than static markdown docs a human reads.
+
+• Terraform/Ansible changes proposed and reviewed through an
+  LLM-mediated PR flow rather than an LLM being an afterthought
+  reviewer bolted onto existing CI.
+
+------------
+Rule-based bot
+
++---------------------------+     +---------------------------+     +----------------------+
+| Exact command             | --> | If/else matcher           | --> | Runs action          |
+| "/restart pod-x"          |     | fixed keyword rules       |     | kubectl restart      |
++---------------------------+     +---------------------------+     +----------------------+
+
+No match → fails or "command not recognized"
+
+
+LLM-powered bot
+
++---------------------------+     +---------------------------+     +----------------------+
+| Natural language          | --> | LLM reasoning             | --> | Action executor      |
+| "checkout keeps crashing" |     | checks logs, picks action |     | human-approved       |
++---------------------------+     +---------------------------+     +----------------------+
+
+Handles phrasing it's never seen, decides the action itself
+
+Top row is the old-style bot — it only fires when input matches a predefined pattern, and fails outside that. Bottom row is an 
+LLM-powered bot — it interprets open-ended phrasing, reasons over your logs/metrics, and decides the action itself, ideally still with 
+a human-approval gate before anything destructive runs.
+
+--------
+LLM is the general category — Claude and ChatGPT are specific examples of LLMs, built by different companies.
+
+Think of it like this:
+
+• LLM (Large Language Model)
+  = the general technology/category. It's a type of AI
+    model trained on huge amounts of text to understand and generate language.
+
+• Claude
+  = an LLM made by Anthropic.
+
+• ChatGPT
+  = not actually the LLM itself — it's the chat product/interface built on top of
+    an LLM called GPT (made by OpenAI). So "GPT-4" is the LLM, "ChatGPT" is the app
+    you talk to it through.
+
+• Other LLMs:
+  Google's Gemini, Meta's Llama, Mistral's models, etc.
