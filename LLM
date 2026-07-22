@@ -135,4 +135,54 @@ ML (Machine Learning) vs LLM (Large Language Model):
   All LLMs are ML models, but not all ML models are LLMs
   (e.g., a model predicting house prices is ML, but not an LLM).
 
+----------------------------------------------------
+so all ai tool is an LLM model?
 
+No — that's a common mix-up. LLMs are just one category of AI tool, not the whole universe of AI.
+
+Examples of AI tools that are NOT LLMs:
+
+• Image recognition/computer vision
+  (e.g., face detection, self-driving car object detection)
+  — these are ML models trained on images, not text.
+
+• Recommendation engines
+  (Netflix, Amazon "you might like")
+  — trained on user behavior patterns, no language
+    generation involved.
+
+• Fraud/anomaly detection
+  (credit card fraud alerts, your own cost-monitoring/
+  security-scanning boto3 work)
+  — statistical/ML models spotting outliers in numeric data.
+
+• Speech-to-text / text-to-speech
+  — specialized audio models, different architecture
+    from LLMs.
+
+• AlphaFold (protein structure prediction),
+  generative image models (Midjourney, DALL-E,
+  Stable Diffusion)
+  — these generate images, not text; different model
+    family (diffusion models, not LLMs).
+
+• Traditional monitoring/alerting AI
+  (anomaly detection in Datadog/Prometheus-style tools)
+  — often just statistical models, not even deep learning.
+
+So the hierarchy looks like:
+
+AI (broad field)
+ └── Machine Learning (learns from data) (ML)
+      ├── LLMs (text-based: Claude, GPT, Gemini, Llama)
+      ├── Computer vision models (images/video)
+      ├── Diffusion models (image/audio generation)
+      ├── Recommendation systems
+      ├── Classic ML (regression, decision trees, anomaly detection)
+      └── ... many others
+
+Why this matters for you in DevOps: a lot of "AI-powered" tools you'll encounter (e.g., anomaly detection in Datadog, predictive 
+autoscaling) are not LLMs — they're classic ML models crunching metrics. The LLM-specific use cases are the ones involving natural 
+language: summarizing logs, chatops, generating IaC, explaining errors in plain English. Knowing this distinction is actually a good 
+thing to be precise about in an interview — saying "AI" broadly vs "LLM" specifically shows you understand the space isn't just one 
+technology.
