@@ -118,3 +118,21 @@ This is the standard path almost every "custom AI" product
 you see today takes — nobody's training a foundation model
 per use case; they're all layering on top of a handful of
 base LLMs (Claude, GPT, Gemini, Llama).
+
+----------------------------------
+ML (Machine Learning) vs LLM (Large Language Model):
+
+• ML is the broad field
+  — any system that learns patterns from data instead of being
+    explicitly programmed. This includes things like spam filters,
+    recommendation engines, fraud detection, image classifiers.
+
+• LLM is a specific type of ML model
+  — one trained specifically on massive amounts of text to
+    understand and generate language.
+
+• So: LLM is a subset of ML, not a separate thing.
+  All LLMs are ML models, but not all ML models are LLMs
+  (e.g., a model predicting house prices is ML, but not an LLM).
+
+
