@@ -36,6 +36,106 @@ Step 2: Verify kubectl access first
 aws eks update-kubeconfig --name <your-cluster-name> --region us-east-2
 kubectl get pods -n <some-namespace>
 
+$ echo ~/.kube/config
+/c/Users/kamalesh parthiban/.kube/config
+
+Kubeconfig path confirmed, but Node.js isn't installed — that's needed since the MCP server runs via npx.
+
+Install Node.js on Windows:
+
+1. Go to https://nodejs.org
+
+2. Download the LTS version (Windows Installer, .msi)
+
+3. Run the installer — accept defaults, make sure "Add to PATH" is checked (it is by default)
+
+4. Restart your terminal (close and reopen Git Bash) after install — PATH won't refresh in an already-open terminal
+
+Verify install:
+
+kamalesh parthiban@kamalesh MINGW64 ~
+$ node -v
+v24.18.0
+
+kamalesh parthiban@kamalesh MINGW64 ~
+$ npx -v
+11.16.0
+
+Correct — that was a dead end. Since Claude Desktop is installed as a Windows Store (MSIX) app, it actually reads its config from:
+
+C:\Users\kamalesh parthiban\AppData\Local\Packages\Claude_pzs8sxrjxfjjc\LocalCache\Roaming\Claude\claude_desktop_config.json
+
+In Claude Desktop, click the hamburger menu (☰) top-left, or your profile icon
+Go to Settings
+
+Go to Settings → Developer → Local MCP servers — you should now see "No servers added"
+
+Claude Desktop shows "No servers added", meaning it didn't pick up your manually-edited JSON
+
+Best fix: use the "Edit Config" button directly (this guarantees you're editing the exact file Claude Desktop reads):
+
+That's the real config file — it's a completely different path than the one we edited earlier (Windows Store/MSIX apps sandbox their AppData into a Packages\...\LocalCache\Roaming folder instead of the plain Roaming folder). That's why your edits didn't apply.
+
+Don't overwrite this file — it has existing settings. We need to add the mcpServers key alongside what's already there.
+
+Step 1: Scroll to the very end of this file in VS Code to see the last few lines (so we know where to insert correctly). Can you scroll down and screenshot the bottom of the file (the closing })?
+
+Step 2 (what we'll do once we see the end):
+
+Find this at the end of the file:
+
+"dframe-local-slice": {
+        "pinnedOrder": [],
+        "homeProjectsPinnedOrder": []
+      }
+    }
+  }
+}
+
+Replace it with:
+
+"dframe-local-slice": {
+        "pinnedOrder": [],
+        "homeProjectsPinnedOrder": []
+      }
+    }
+  },
+  "mcpServers": {
+    "kubernetes": {
+      "command": "npx",
+      "args": ["-y", "kubernetes-mcp-server@latest", "--read-only"],
+      "env": {
+        "KUBECONFIG": "C:\\Users\\kamalesh parthiban\\.kube\\config"
+      }
+    }
+  }
+}
+
+Steps:
+
+1. Make that edit in VS Code
+
+2. Save (Ctrl+S)
+
+3. Fully quit Claude Desktop — check Task Manager (Ctrl+Shift+Esc) for `Claude.exe`, End Task if running
+
+4. Reopen Claude Desktop
+
+5. Go to Settings → Developer → Local MCP servers — you should now see "kubernetes" listed instead of "No servers added"
+
+Let me know what you see after the restart.
+
+Great — the MCP server is registered. Now let's confirm it's actually working end-to-end.
+
+Test it:
+Go to a chat in Claude Desktop and ask:
+
+"List all pods in my Kubernetes cluster"
+
+--------------------------------------------------------------------------------------------------------------
+END
+-------------------------------------------------------------
+
 Confirm this works before adding MCP — if kubectl fails, MCP will fail too.
 
 Step 3 (Recommended for prod safety): Create a read-only ServiceAccount
