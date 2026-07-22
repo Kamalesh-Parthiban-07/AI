@@ -72,3 +72,49 @@ Think of it like this:
 
 • Other LLMs:
   Google's Gemini, Meta's Llama, Mistral's models, etc.
+-----------------------------------------------------------------
+we can create custom ai using llm right?
+
+Yes, exactly — that's essentially what "building on an LLM" means. You don't train a model from scratch (that requires massive 
+compute/data most companies don't have); instead you build a custom AI application on top of an existing LLM like Claude or GPT, 
+using its API.
+
+What "custom" actually means in practice:
+
+1. System prompt / instructions
+   — you tell the LLM its role, tone, constraints (e.g., "you
+   are a Kubernetes troubleshooting assistant for our EKS
+   clusters, only suggest read-only diagnostics unless
+   explicitly asked to remediate").
+
+2. Tool/function calling
+   — you give it specific tools it can call:
+     get_pod_logs(),
+     check_argocd_sync_status(),
+     run_terraform_plan().
+   The LLM decides when to call them based on the
+   conversation; your code executes the actual logic.
+
+3. RAG (Retrieval-Augmented Generation)
+   — you feed it your own data (runbooks, past incident
+   reports, your Terraform module docs) so it answers using
+   your context, not just its general training.
+
+4. Fine-tuning (less common, more effort)
+   — actually adjusting the model's weights on your own
+   examples. Usually unnecessary — prompting + tools + RAG
+   covers most custom use cases.
+
+Concretely, for your setup:
+
+You could build a custom AI assistant that's "Claude, but
+scoped to your infra" — it knows your EKS topology, can
+query ArgoCD/CloudWatch via tools, and only speaks in the
+context of your Akamai/NLB/NGINX Ingress stack. That's not
+a new LLM — it's Claude (or any LLM) wrapped with your
+prompt, your tools, and your data.
+
+This is the standard path almost every "custom AI" product
+you see today takes — nobody's training a foundation model
+per use case; they're all layering on top of a handful of
+base LLMs (Claude, GPT, Gemini, Llama).
