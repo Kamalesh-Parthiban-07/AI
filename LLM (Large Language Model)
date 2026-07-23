@@ -41,4 +41,113 @@ Step 3 (optional, advanced): Fine-tune
 • Take the open model and further train it on your own Q&A pairs (e.g., your DevOps notes) so it "speaks" more like you want
 
 • Doable on a cloud GPU instance (AWS g5.xlarge or similar) — you already know EKS/Terraform, so spinning up GPU infra wouldn't be new territory for you
+--------------------------------
+after that mcp also will suport in that llm?
+
+Yes — MCP isn't Claude-exclusive. It's an open protocol, so any LLM that has an MCP-compatible client can use the same servers we just set up (Kubernetes, GitHub, Jenkins).
+
+How this works with Ollama specifically:
+
+Ollama itself doesn't have MCP built in yet, but there are MCP client tools that sit on top of it:
+
+
+Tool                  What it does
+---------------------------------------------------------------------------
+Continue.dev          Open-source AI coding assistant, supports MCP +
+                      local models via Ollama
+
+LibreChat            Open-source ChatGPT-like UI, has MCP support,
+                     can point to Ollama as the backend
+
+Custom Python        You write your own client using the MCP Python
+script               SDK + call Ollama's API — full control, more work
+
+Practical reality: the same MCP servers you already configured (kubernetes-mcp-server, @modelcontextprotocol/server-github, @kud/mcp-jenkins) would work unchanged — MCP servers don't care which LLM is calling them. You'd just point a different client (LibreChat, Continue, or your own script) at your local Ollama model instead of Claude.
+
+One honest caveat: open-source models (Llama 3, Mistral) are noticeably weaker than Claude at reliably calling tools correctly — tool-use/function-calling was a specific area Claude/GPT-4 class models were heavily trained on. A local 7B/8B model might call the wrong tool, malform arguments, or ignore instructions more often. It'll work, just expect more errors than what you just saw with Claude.
+
+-----------------------
+Lets start
+
+Charted installation pathway for Ollama setup
+
+Let's set up Ollama first, then LibreChat on top for the MCP-capable chat UI.
+
+Step 1: Install Ollama on Windows
+
+1. Go to https://ollama.com/download
+2. Download the Windows installer
+3. Run it — installs like any normal app, no config needed
+
+Docker                                    Ollama
+---------------------------------------------------------------------------
+docker pull nginx                         ollama pull llama3
+Pulls container images from Docker Hub    Pulls model weights from Ollama's registry
+
+docker run nginx                          ollama run llama3
+Runs container as an isolated process     Runs the model as a local process, loaded into RAM/GPU
+
+Images stored in /var/lib/docker          Models stored in ~/.ollama/models
+
+docker ps — list running containers       ollama list — list downloaded models
+
+Key difference: Docker containers are isolated OS environments; Ollama just loads a model's weights into memory and exposes an API (localhost:11434) for you to send prompts to and get text back — no OS-level isolation, just a model runtime.
+
+So yes — same mental model as what you already know from Karpenter/EKS work: pull once, run locally, interact via CLI or API. You'll pick this up fast.
+
+Step 2: Verify install (in Git Bash)
+
+ollama -v
+
+Step 3: Pull a model
+
+ollama pull llama3
+
+This downloads ~4.7GB — takes a few minutes depending on your connection.
+
+Step 4: Test it directly
+
+ollama run llama3
+
+kamalesh parthiban@kamalesh MINGW64 ~
+$ ollama run llama3
+>>> Send a message (/? for help)
+
+Model's running and prompting for input — Ollama's working correctly.
+
+Try sending it a message now:
+
+>>> What is Kubernetes in one line?
+
+Type your message and hit Enter — you should get a response back from Llama3 running fully locally on your machine (no internet, no API calls to anyone).
+
+Once you confirm you got a response, type:
+
+/bye
+
+to exit, and we'll move to setting up LibreChat next for the proper chat UI + MCP support.
+
+so this is my own ai?
+
+Sort of — let's be precise about what "own" means here, since it matters:
+
+What IS yours:
+
+• The installation — running entirely on your laptop, no data sent anywhere
+
+• The runtime/environment — you control it completely, can turn it off, delete it, run it offline
+
+• Anything you build on top (RAG with your notes, MCP connections to your Jenkins/K8s/GitHub)
+
+What is NOT yours:
+
+• The model itself (Llama 3) — trained by Meta, using their data, their compute, their training process. You're running a copy of their pre-trained model, not something you built
+
+• You didn't create the "intelligence" — you're hosting/operating an open-source model someone else trained
+
+Accurate way to describe it: it's a privately-run, self-hosted AI assistant — similar to how running Nginx on your own EC2 instance doesn't mean you built a web server from scratch, but you do fully own and control that specific running instance.
+
+If you truly wanted to "build your own AI" — that would mean training a model from scratch on data you choose, which requires the massive compute/cost we discussed earlier (unrealistic solo).
+
+For practical purposes though — yes, this is a legitimate way to have a private, offline, customizable AI assistant that's entirely under your control, and you can absolutely call it "my own local AI setup." Just worth knowing the distinction if it comes up in an interview or technical discussion.
 
