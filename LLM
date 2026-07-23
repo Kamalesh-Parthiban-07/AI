@@ -1,12 +1,12 @@
-"LLM-first" is a design philosophy — the same pattern as "API-first" or "mobile-first," but for AI. Instead of building a system the 
-traditional way and bolting an LLM on as a feature afterward, you architect the system around the LLM as the primary interface or 
-reasoning engine from the start.
+What I can say for comparison, though:
 
-What it means in practice:
+|                     | Llama3 (what you're running)                                  | Me (Claude)                                              |
+|---------------------|---------------------------------------------------------------|----------------------------------------------------------|
+| Parameters          | 8B (the version you pulled) — Meta does publish this          | Not publicly disclosed                                   |
+| Runs on             | Your laptop's CPU/RAM                                         | Anthropic's data center infrastructure (large GPU/TPU clusters) |
+| Access              | Fully local, fully yours                                      | Cloud-hosted, accessed via API/chat                      |
 
-• Traditional approach:
-  Build a dashboard/CLI/pipeline → later add a chatbot on top
-  that can answer questions about it.
+
 
 • LLM-first approach:
   Design the system so the LLM is the primary way people interact
