@@ -252,5 +252,226 @@ Then type a question about your documents.
 
 Try Step 4 (ingest) first and paste any errors — then we'll test a real question against your docs.
 
+---------
+Good — lots of files copied, but the current script only reads top-level .txt/.pdf files. It'll miss everything in subfolders (ArgoCD/, HARITA PVT LTD/, k8s interview.md, etc.) and skip .docx, .mp4, .png, .md files entirely.
+
+Let's update the script to:
+
+1. Walk subfolders recursively
+2. Support .txt, .md, .pdf, and .docx
+3. Skip .mp4/.png/.jpg (video/images aren't useful for text RAG — and the large 100MB+ .mp4 files would slow things down badly for no benefit)
+
+Two things before you run this:
+
+1. Install one extra package for .docx support:
+
+python -m pip install python-docx
+
+2. The .mp4 files (100MB+ each) will just be skipped automatically — good, since videos have no text to extract anyway. If you ever want their content searchable, that'd need a separate transcription step (Whisper), which is a different project.
+
+Then re-download this updated rag.py, replace the old one in ~/rag-project/, and run:
+
+cd ~/rag-project
+python rag.py ingest
+
+This will now walk into every subfolder (ArgoCD/, k8s interview/, srini interview, etc.) and pull in .txt, .md, .pdf, .docx files, skipping media/images automatically. It'll print progress per-file as it goes — given the volume of files, this may take a few minutes since each chunk requires an embedding call.
+
+Run it and paste the output (or first few lines + final summary if it's long).
+
+-----
+kamalesh parthiban@kamalesh MINGW64 ~/rag-project
+$ python rag.py ingest
+Ingesting documents from: docs (recursive)
+  AWS interview questions.txt: 81 chunks
+Segmentation fault
+(venv)
+
+failed
+--------
+Step 1: Install Python 3.11
+Go to https://www.python.org/downloads/release/python-3119/ → scroll down → download Windows installer (64-bit)
+
+During install: check "Add python.exe to PATH" — but since you'll have multiple Python versions now, we'll reference it explicitly rather than relying on PATH order.
+
+Step 2: Verify it installed alongside 3.14
+
+py -0
+
+Step 3: Recreate the virtual environment using 3.11 specifically
+
+cd ~/rag-project
+rm -rf venv
+py -3.11 -m venv venv
+source venv/Scripts/activate
+python --version
+
+Should now show Python 3.11.x.
+
+Step 4: Reinstall dependencies in the new venv
+
+python -m pip install langchain langchain-community chromadb pypdf ollama python-docx
+
+Step 5: Retry ingestion
+
+python rag.py ingest
+
+--
+kamalesh parthiban@kamalesh MINGW64 ~/rag-project
+$ python rag.py ingest
+Ingesting documents from: docs (recursive)
+  AWS interview questions.txt: 81 chunks
+Segmentation fault
+(venv)
+kamalesh parthiban@kamalesh MINGW64 ~/rag-project
+
+failed again
+---
+
+Found it — onnxruntime's DLL failed to load on Windows. This is a very common issue and has a known fix: Windows is usually missing the Visual C++ Redistributable that onnxruntime's compiled binaries depend on.
+
+Fix — Install Visual C++ Redistributable:
+
+1. Download:
+   https://aka.ms/vs/17/release/vc_redist.x64.exe
+
+2. Run the installer (it's quick, no restart usually needed — but restart if prompted)
+
+Reactivate the venv first:
+
+cd ~/rag-project
+source venv/Scripts/activate
+python --version
+
+Then install onnxruntime inside the venv specifically:
+
+python -m pip install onnxruntime
+
+Verify:
+
+python -c "import onnxruntime; print('OK', onnxruntime.__version__)"
+
+Good — now correctly inside the venv this time (c:\users\kamalesh parthiban\rag-project\venv\lib\site-packages), and onnxruntime is already there at 1.27.0.
+
+That confirms it — installing the VC++ Redistributable fixed the onnxruntime DLL crash, which was the root cause of the segfault all along.
+
+Now let's clean up and retry the real ingestion:
+
+cd ~/rag-project
+rm -rf chroma_db
+python rag.py ingest
+
+success
+---------
+kamalesh parthiban@kamalesh MINGW64 ~/rag-project
+$ cd ~/rag-project
+rm -rf chroma_db
+python rag.py ingest
+Ingesting documents from: docs (recursive)
+  AWS interview questions.txt: 81 chunks
+  Dockerfile_Instructions.txt: 25 chunks
+  git interview.txt: 8 chunks
+  GitHub Actions CI + ArgoCD Gitops.txt: 16 chunks
+  global payment scripts.txt: 14 chunks
+  jenkins internivew.txt: 47 chunks
+  k8s interview some.txt: 20 chunks
+  k8s interview.md: 22 chunks
+  k8s interview.txt: 82 chunks
+  Kamalesh Parthiban Resume. - Copy.docx: 7 chunks
+  Kamalesh Parthiban.docx: 4 chunks
+  pipeline for github action and jenkins simple.txt: 3 chunks
+  python.txt: 5 chunks
+  remote.txt: 1 chunks
+  RHEL MORNING 7AM NEW.txt: 212 chunks
+  RHEL MORNING 7AM.txt: 197 chunks
+  self evaluvation.txt: 13 chunks
+  srini interview.md: 51 chunks
+  srini interview.txt: 24 chunks
+  switches you tube videos.txt: 17 chunks
+  Terraform install.txt: 59 chunks
+  Terraform main.txt: 38 chunks
+  bangalore tech\1. CHECK LIST.pdf: 3 chunks
+  bangalore tech\2. PF Nomination Form-2 (1).pdf: 7 chunks
+  bangalore tech\4. Candidate Declaration Form.pdf: 9 chunks
+  bangalore tech\5. Joining sets Harita.pdf: 15 chunks
+  bangalore tech\Induction_Program_Feedback_Questionnaire.pdf: 3 chunks
+  bangalore tech\KYC Details.pdf: 3 chunks
+  grafana and prometheus\gp2 and gp3.txt: 3 chunks
+  grafana and prometheus\grafana and promethus prod worldpay.txt: 14 chunks
+  grafana and prometheus\Instana agent daemonset.txt: 15 chunks
+  grafana and prometheus\prometheus - grafana cloud alloy doc 3.txt: 17 chunks
+  grafana and prometheus\prometheus configmap.txt: 21 chunks
+  grafana and prometheus\prometheus grafana-cloud-alloy-events doc 5.txt: 14 chunks
+  grafana and prometheus\prometheus grafana-cloud-kube-state-metrics doc 6.txt: 17 chunks
+  grafana and prometheus\prometheus pod logs doc 2.txt: 13 chunks
+  grafana and prometheus\prometheus- node exporter doc1.txt: 17 chunks
+  HARITA PVT LTD\EVF FORM -updated.pdf: 22 chunks
+  KAMALESH documents\1st april 2020 to march 2021.pdf: 61 chunks
+  KAMALESH documents\1st april 2021 to march 2022.pdf: 82 chunks
+  KAMALESH documents\EMPLOY DETAILS.txt: 1 chunks
+  KAMALESH documents\EPFO.pdf: 7 chunks
+  KAMALESH documents\for11 dec.pdf: 4 chunks
+  KAMALESH documents\form 11.pdf: 5 chunks
+  KAMALESH documents\Kamalesh Parthiban Resume. (1).pdf: 7 chunks
+  KAMALESH documents\Offer Letter - Kamalesh Parthiban.pdf: 2 chunks
+  KAMALESH documents\Red_Hat_Certificate_RHCSA-rhel_Kamalesh_Parthiban.pdf: 2 chunks
+  KAMALESH documents\Relieving Letter - Kamalesh Parthiban.pdf: 2 chunks
+  KAMALESH documents\UAN CARD.pdf: 2 chunks
+  KAMALESH documents\New\EMPLOYMENT DOCUMENTS\1st april 2021 to march 2022.pdf: 82 chunks
+  KAMALESH documents\New\EMPLOYMENT DOCUMENTS\EPFO.pdf: 7 chunks
+  KAMALESH documents\New\EMPLOYMENT DOCUMENTS\Offer Letter - Kamalesh Parthiban.pdf: 2 chunks
+  KAMALESH documents\New\EMPLOYMENT DOCUMENTS\Relieving Letter - Kamalesh Parthiban.pdf: 2 chunks
+  KAMALESH documents\New folder\EMPLOYMENT DOCUMENTS.pdf: 96 chunks
+  KAMALESH_PARTHIBAN worldpay\Resume.docx: 11 chunks
+  KAMALESH_PARTHIBAN worldpay\Education\AWS Certified Solutions Architect - Associate certificate.pdf: 1 chunks
+  KAMALESH_PARTHIBAN worldpay\Education\Red_Hat_Certificate_RHCSA-rhel_Kamalesh_Parthiban.pdf: 2 chunks
+  KAMALESH_PARTHIBAN worldpay\Employment\Relieving Letter - Kamalesh Parthiban.pdf: 2 chunks
+  KAMALESH_PARTHIBAN worldpay\Personal\EAadhaar_0632241392083720201219180243_0703202421752-unlocked.pdf: 2 chunks
+  KAMALESH_PARTHIBAN worldpay\Salary Slips\11642_Payslip_Dec2023.pdf: 2 chunks
+  KAMALESH_PARTHIBAN worldpay\Salary Slips\11642_Payslip_Feb2024.pdf: 2 chunks
+  KAMALESH_PARTHIBAN worldpay\Salary Slips\11642_Payslip_Jan2024.pdf: 2 chunks
+  Real time EKS cluster design and doc\eks_manual_setup_guide.docx: 15 chunks
+  Worldpay jenkins pipeline\@Library(['luigi-shared-library', '.txt: 4 chunks
+  Worldpay jenkins pipeline\addCommitStatus.txt: 3 chunks
+  Worldpay jenkins pipeline\buildKpackImage.txt: 25 chunks
+  Worldpay jenkins pipeline\checkmarxScan.txt: 7 chunks
+  Worldpay jenkins pipeline\collectMetrics.txt: 2 chunks
+  Worldpay jenkins pipeline\createReportFile.txt: 4 chunks
+  Worldpay jenkins pipeline\determineXldEnvironmentId.txt: 1 chunks
+  Worldpay jenkins pipeline\initializeCommitStatuses.txt: 10 chunks
+  Worldpay jenkins pipeline\invokePostDeploymentJobs.txt: 3 chunks
+  Worldpay jenkins pipeline\pipeline order steps.txt: 9 chunks
+  Worldpay jenkins pipeline\publishToXLD.txt: 2 chunks
+  Worldpay jenkins pipeline\runKubeMavenMultiBranchJobTemplate.txt: 104 chunks
+  Worldpay jenkins pipeline\sendEmailNotification.txt: 3 chunks
+  Worldpay jenkins pipeline\sonarQubeScan.txt: 18 chunks
+  Worldpay jenkins pipeline\validationAndSetup.txt: 23 chunks
+
+Ingestion complete. Files processed: 78, skipped: 93, total chunks: 1760
+(venv)
+
+----------------------------------------------
+One flag worth mentioning: this now includes fairly sensitive personal docs — Aadhaar card, salary slips, offer letters — sitting in a local ChromaDB folder (chroma_db/). Since everything's running fully offline (Ollama + local Chroma, no API calls out), this is safe as long as:
+
+You don't push this rag-project folder to GitHub
+You don't share the chroma_db/ folder itself
+
+Worth adding a .gitignore if you ever version-control this project:
+
+chroma_db/
+docs/
+venv/
+
+Now let's test it — ask a real question:
+
+python rag.py
+
+Then try something like:
+
+What is the difference between StatefulSet and Deployment?
+
+or
+
+Summarize my Worldpay Jenkins pipeline stages
+
 
 
