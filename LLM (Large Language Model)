@@ -150,4 +150,107 @@ Accurate way to describe it: it's a privately-run, self-hosted AI assistant — 
 If you truly wanted to "build your own AI" — that would mean training a model from scratch on data you choose, which requires the massive compute/cost we discussed earlier (unrealistic solo).
 
 For practical purposes though — yes, this is a legitimate way to have a private, offline, customizable AI assistant that's entirely under your control, and you can absolutely call it "my own local AI setup." Just worth knowing the distinction if it comes up in an interview or technical discussion.
+---------------------
+first lets do rags
+--------------------------
+
+Good call — RAG first makes sense since it directly uses your own notes/documents. Here's the practical path:
+
+Stack: Python + LangChain + ChromaDB (vector store) + Ollama (your local LLM)
+
+Step 1: Check Python
+
+python --version
+
+(Need 3.9+)
+
+Python isn't installed — Windows is showing its Store-redirect stub. Let's install it properly (not via Store, to avoid path/permission quirks):
+
+-> Download Python
+
+Go to https://www.python.org/downloads/ → click the big "Download Python 3.x.x" button (gets the latest stable version)
+
+-> Run the installer
+
+• Important: On the first screen, check the box "Add python.exe to PATH" at the bottom before clicking Install
+
+• Click "Install Now"
+
+-> Restart Git Bash
+
+Close and reopen your terminal completely (PATH won't refresh in an already-open window)
+
+-> Verify
+
+python --version
+pip --version
+
+
+
+Step 2: Create a project folder + virtual environment
+
+mkdir ~/rag-project && cd ~/rag-project
+python -m venv venv
+source venv/Scripts/activate
+
+Step 3: Install dependencies
+
+pip install langchain langchain-community chromadb pypdf ollama
+
+Step 4: Pull an embedding model (needed to convert text into vectors)
+
+Step 4: Pull an embedding model (needed to convert text into vectors)
+
+ollama pull nomic-embed-text
+
+What we'll build:
+
+1. You point it at a folder of documents (your Terraform notes, DevOps PDFs, etc.)
+2. It chunks + embeds them into ChromaDB
+3. When you ask a question, it retrieves relevant chunks and feeds them to `llama3` as
+   context
+4. Llama3 answers using your documents, not just its general training
+
+Run Steps 1-4 and confirm output — then I'll give you the actual Python script to build the
+RAG pipeline.
+
+--
+All installed cleanly. Given langchain 1.3.14 is a very new major version with a different API than most tutorials assume, I'll write the RAG script using chromadb + ollama directly — simpler, more reliable, fewer breaking-API surprises.
+
+Step 1: Create a folder for your documents
+
+mkdir docs
+
+Drop a few files in there — PDFs or .txt files (e.g., your Terraform notes, a DevOps PDF, interview prep notes).
+
+Step 2: Create the RAG script
+
+Created a file, ran a command, read a file
+
+How this works (simple, no fragile langchain chains):
+
+1. Reads PDFs/txt files from docs/
+2. Chunks text, embeds each chunk via nomic-embed-text
+3. Stores embeddings in ChromaDB (persisted locally in chroma_db/)
+4. On question: embeds your query, finds the closest matching chunks, feeds them as context to llama3
+
+Steps to run:
+
+1. Download the script above, save it in ~/rag-project/rag.py
+2. Put a few files in ~/rag-project/docs/ (PDFs or .txt)
+3. Make sure Ollama is running (ollama serve runs automatically in the background once installed)
+4. Ingest your documents:
+
+python rag.py ingest
+
+5. Ask questions:
+
+```bash
+python rag.py
+
+Then type a question about your documents.
+
+Try Step 4 (ingest) first and paste any errors — then we'll test a real question against your docs.
+
+
 
