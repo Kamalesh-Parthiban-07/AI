@@ -1,0 +1,88 @@
+RAG (Retrieval-Augmented Generation) — instead of relying only on what an LLM learned during training, it retrieves relevant chunks 
+from your own documents (via a vector database) and feeds them to the model as context before it answers.
+
+This lets the model answer questions using your specific data (notes, docs, PDFs) accurately, without needing to retrain or fine-tune the 
+model itself — like what we just built with your interview files + Llama3 + ChromaDB.
+
+What's happening:
+
+• llama3 (the model) is frozen — same weights every time, doesn't change based on your conversations
+
+• Your docs/ folder gets re-read and re-embedded only when you explicitly run python rag.py ingest
+
+• Each time you ask a question, it does a fresh search through your existing embeddings — it's not accumulating new knowledge or getting "smarter" from past questions
+
+Analogy for your context: think of it like Grafana querying Prometheus — Prometheus doesn't "learn" from queries, it just stores data and answers questions against it. Same here: Chroma stores your document embeddings, Llama3 just retrieves + summarizes. No training happens during use.
+
+For it to actually "learn" new information, you'd need to:
+
+1. Add new files to docs/
+
+2. Manually re-run:
+   python rag.py ingest
+
+----
+docs/ folder (txt, md, pdf, docx)
+Ingested once via: python rag.py ingest
+            │
+            ▼
+ChromaDB vector store
+Stores 1760 embedded chunks
+            ▲
+            │
+            ▼
+Your question
+"Summarize pipeline stages"
+            │
+            ▼
+Embed question
+nomic-embed-text
+            │
+            ▼
+Retrieve + keyword boost
+Top matches, capped per file
+            │
+            ▼
+Llama3 (Ollama)
+Answers using retrieved context
+            │
+            ▼
+Answer + sources shown to you
+
+That's the full flow: your documents get ingested once into ChromaDB, and every time you ask a question, it gets embedded, matched against your stored chunks (with the keyword-boost fix for code/config files), and the retrieved context gets handed to Llama3 to generate a grounded answer.
+                                                                                                                                                               
+----
+in this normal question it not answering it only telling relavent to docs?
+                                                                                                                                                               
+Right — that's by design, not a bug. Look at the prompt we wrote in rag.py:
+
+prompt = f"""Answer the question using ONLY the context below. If the answer isn't in the context, say so.
+
+Your options:
+                                                                                                                                                               
+1. For general chat (no document grounding):
+                                                                                                                                                               
+ ollama run llama3
+                                                                                                                                                               
+This is plain Llama3, answers anything using its own training knowledge — no RAG involved.
+                                                                                                                                                               
+  -----------------------
+does llama3 learn by itself?
+
+No — same as before, Llama3 itself never learns or updates on its own. Its weights are frozen at whatever Meta trained it on.
+
+• Every time you run `ollama run llama3` or use it in your RAG script, you get the exact same base model — no memory of past conversations, no self-updating
+
+• Ollama doesn't retrain it in the background
+
+• The only way it "gains" new knowledge is if you explicitly fine-tune it on new data (a separate, deliberate training process) — which isn't happening in your current setup
+
+So right now: fully static model, zero self-learning, zero drift over time. Same behavior today as a year from now, unless you manually update to a newer model version.
+                                                                                                                                                               
+                                                                                                                                                               
+                                                                                                                                                               
+                                                                                                                                                               
+                                                                                                                                                               
+                                                                                                                                      
+                                                                                                                                                               
+                                                                                                                                                               
