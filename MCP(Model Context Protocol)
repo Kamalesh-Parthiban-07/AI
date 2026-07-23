@@ -203,3 +203,42 @@ Step 6: Test it
 Ask Claude: "List all namespaces in my cluster" or "Show me pods in CrashLoopBackOff across all namespaces."
 
 Want help with the ServiceAccount → kubeconfig extraction part (Step 3), since that's usually the fiddly bit?
+
+--------------------------
+GIT
+------
+Local GitHub MCP server (like we did for Kubernetes)
+
+Option B: Local GitHub MCP server (like we did for Kubernetes)
+
+If you want the local/manual route:
+
+1. Generate a GitHub Personal Access Token (PAT):
+   • GitHub → Settings → Developer settings → Personal access tokens → Generate new token
+   • Scope: repo (for private repos) or public_repo (public only)
+
+2. Edit the same config file (Edit Config in Settings → Developer):
+
+},
+  "mcpServers": {
+    "kubernetes": {
+      "command": "npx",
+      "args": ["-y", "kubernetes-mcp-server@latest"],
+      "env": {
+        "KUBECONFIG": "C:\\Users\\kamalesh parthiban\\.kube\\config"
+      }
+    },
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "your_token_here"
+      }
+    }
+  }
+}
+
+Save the file, then quit Claude Desktop fully (Task Manager) and reopen.
+----------------------------------------------------------------
+Jenkins
+---------------
