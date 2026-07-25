@@ -358,3 +358,44 @@ Edit the same config file (Edit Config in Settings → Developer):
     }
   }
 }
+
+------------
+AWS
+-----------
+Here's how to set up full AWS access via MCP — the @aws-mcp/server-aws package (simplest npx-based option, matches the pattern you already know):
+
+Step 1: Set up billing alert first (important safety net)
+Go to AWS Console → Billing → Budgets → Create a budget → set alert at e.g. $10 so you get emailed if anything runs up cost unexpectedly.
+
+Step 2: Confirm AWS CLI credentials are already configured
+
+aws sts get-caller-identity
+
+This should show your account details — if it works, your ~/.aws/credentials file already has what's needed (same credentials the MCP server will use).
+
+Step 3: Add the AWS MCP server to your config
+
+Open claude_desktop_config.json via Settings → Developer → Edit Config, add alongside kubernetes/github/jenkins:
+
+"aws": {
+  "command": "npx",
+  "args": ["-y", "@aws-mcp/server-aws"]
+}
+
+Step 4: Save, fully quit Claude Desktop (Task Manager check), reopen
+
+Step 5: Verify it's connected
+Settings → Developer → Local MCP servers — should show "aws" listed
+
+Step 6: Test with something safe first (read-only)
+
+List all EC2 instances in my account
+
+Step 7: Once confirmed working, try creating
+
+Create a t3.micro EC2 instance in us-east-2 using the default VPC
+
+Claude should explain exactly what it's about to do and ask for confirmation before executing.
+
+Important honest note since you said "create everything": since your existing AWS CLI credentials are likely full admin (same ones you use for Terraform/EKS), this MCP server will inherit that same full access — meaning Claude could create/modify/delete anything in your account, not just EC2. On your personal account, that's your call and reasonably fine to experiment with. Just keep the billing alert active and periodically check the AWS Console yourself to confirm nothing unexpected is running.
+
