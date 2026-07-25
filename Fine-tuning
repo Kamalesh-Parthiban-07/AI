@@ -1,0 +1,90 @@
+-----------------------
+Fine-tuning
+-------------------
+Fine-tuning = retraining the model further on your own data, so it permanently absorbs new patterns/knowledge into its weights — without needing that data fed to 
+it again later (unlike RAG).
+
+Fine-tuning applies to the base model itself (Llama3/Claude) — not to RAG.
+
+Clear distinction:
+
++-----------------+--------------------------------------------------------------+--------------------------------------------------------------+
+|                 | Fine-tuning                                                  | RAG                                                          |
++-----------------+--------------------------------------------------------------+--------------------------------------------------------------+
+| What changes    | The model's actual weights get updated (real training)       | Nothing about the model changes — it stays completely frozen |
++-----------------+--------------------------------------------------------------+--------------------------------------------------------------+
+| What you're     | Retraining Llama3 further on new data to                     | Feeding external documents as temporary context at           |
+| doing           | permanently bake in new knowledge/behavior                   | question-time                                                |
++-----------------+--------------------------------------------------------------+--------------------------------------------------------------+
+| Result          | A new version of the model (e.g., Llama3 ->                  | Same original Llama3, just answering with extra              |
+|                 | your-custom-llama3)                                          | reference material each time                                 |
++-----------------+--------------------------------------------------------------+--------------------------------------------------------------+
+| Effort/cost     | Needs GPU compute, training pipeline, real ML                | What you built today — Python script + vector DB,            |
+|                 | engineering                                                  | no training involved                                         |
++-----------------+--------------------------------------------------------------+--------------------------------------------------------------+
+
+Practical result of fine-tuning (example for you):
+
+If you fine-tuned Llama3 on your Worldpay Jenkins pipeline docs:
+
+• It would start answering pipeline questions confidently without needing RAG lookup
+  — the knowledge becomes baked into the weights
+
+• But it might also forget some of its general Llama3 knowledge in the process
+  (this is a real risk called "catastrophic forgetting") if not done carefully
+
+The parallel:
+
++--------------------------------------------+--------------------------------------------------------------+
+| RAG                                        | Fine-tuning                                                  |
++--------------------------------------------+--------------------------------------------------------------+
+| Add more files to docs/ folder             | Add more training examples to your fine-tuning dataset       |
++--------------------------------------------+--------------------------------------------------------------+
+| Run python rag.py ingest                   | Run a retraining job (GPU-based training script)             |
++--------------------------------------------+--------------------------------------------------------------+
+| ChromaDB gets updated with new embeddings  | Model's actual weights get updated                           |
++--------------------------------------------+--------------------------------------------------------------+
+| Llama3 itself stays unchanged              | Llama3's weights literally change — new version created      |
++--------------------------------------------+--------------------------------------------------------------+
+| Takes seconds/minutes                      | Takes hours/days, needs GPU compute                          |
++--------------------------------------------+--------------------------------------------------------------+
+
+if we want to update we need fine tuning?
+
+1. Update the model's knowledge/behavior permanently
+   → Yes, fine-tuning (or full retraining)
+
+   • Example: you want Llama3 to permanently "know" your Worldpay pipeline
+     without needing RAG lookup every time
+
+   • Requires: training data (Q&A pairs), GPU compute,
+     actual retraining process
+
+
+2. Update what information it has access to
+   → No, RAG is enough (what you already built)
+
+   • Example: you add a new interview note tomorrow,
+     and want to ask questions about it
+
+   • Just: drop the file in docs/, run
+     python rag.py ingest
+     again — done, no fine-tuning needed
+
+
+Quick decision guide for your case:
+
++-----------------------------------------------------------+----------------------------------------------+
+| You want to...                                            | Use                                          |
++-----------------------------------------------------------+----------------------------------------------+
+| Add new documents/notes to query                          | RAG (just re-ingest) — what you already have |
++-----------------------------------------------------------+----------------------------------------------+
+| Make responses faster (skip retrieval step)               | Fine-tuning                                  |
++-----------------------------------------------------------+----------------------------------------------+
+| Change how it talks/behaves/formats answers               | Fine-tuning                                  |
++-----------------------------------------------------------+----------------------------------------------+
+| Add brand new facts it should "just know" without lookup  | Fine-tuning                                  |
++-----------------------------------------------------------+----------------------------------------------+
+| Keep it flexible, easy to update, no GPU cost             | RAG (your current setup)                     |
++-----------------------------------------------------------+----------------------------------------------+
+----
