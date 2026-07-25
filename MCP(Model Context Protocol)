@@ -96,7 +96,36 @@ One more parallel worth noting, given your Docker background:
 
 • npm install -g behaves more like yum install
   (persists on the system)
+---------------------
+all three are package then why we call it mcp server?
 
+Good question — this gets at a naming/terminology overlap that's genuinely
+worth clarifying.
+
+They're two true things at the same time — not a contradiction:
+
++-----------------------------------+--------------------------------------------------------------------------+
+| Perspective                       | What it's called                                                         |
++-----------------------------------+--------------------------------------------------------------------------+
+| How it's                          | An npm package (just like any other npm package                          |
+| distributed/installed             | — same registry, same install mechanism)                                 |
++-----------------------------------+--------------------------------------------------------------------------+
+| What it DOES when you             | An MCP server (a running program that speaks the MCP protocol)           |
+| run it                            |                                                                          |
++-----------------------------------+--------------------------------------------------------------------------+
+
+
+Analogy for your background:
+
+Think of nginx:
+
+• How it's distributed:
+  it's a .deb /.rpm package (or Docker image)
+  — installed via apt / yum / docker pull
+
+• What it does when running:
+  it's a web server
+  — that's its function, not its packaging format
 ========================
 
 5. Correct — that was a dead end. Since Claude Desktop is installed as a Windows Store (MSIX) app, it actually reads its config from:
