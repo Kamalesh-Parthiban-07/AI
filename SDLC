@@ -1,0 +1,27 @@
+SDLC = Software Development Life Cycle — the structured process/phases a team follows to build and deliver software.
+
+Models of SDLC: Waterfall (sequential), Agile (iterative sprints), DevOps (CI/CD-driven, continuous), Spiral, V-Model.
+
+devops is also SDLC model?
+
+Yes, correct — DevOps is considered one of the modern SDLC models, alongside Waterfall, Agile, Spiral, V-Model, etc.
+
+Why DevOps qualifies as an SDLC model:
+
+It still covers all the same phases (plan, code, build, test, release, deploy, operate, monitor) — but the difference is how:
+
+Traditional SDLC (Waterfall/Agile)        | DevOps SDLC
+------------------------------------------|----------------------------------------------
+Dev and Ops are separate teams            | Dev and Ops merged into one responsibility
+Manual handoffs between phases            | Automated pipelines (CI/CD)
+Testing happens late                      | Testing integrated continuously (shift-left)
+Deployment is a big, scheduled event      | Continuous deployment, small frequent releases
+Monitoring is reactive                    | Monitoring is continuous, feeds back into planning
+
+The DevOps lifecycle (infinity loop):
+Plan → Code → Build → Test → Release → Deploy → Operate → Monitor → (feeds back to Plan)
+
+Interview-ready line:
+"DevOps isn't a replacement for SDLC — it's an SDLC model itself, where every phase (build, test, deploy, monitor) is automated and continuous instead of manual and sequential. The goal is faster, more reliable releases through collaboration between Dev and Ops."
+
+Since your Jenkins/ArgoCD pipeline at GlobalPayments literally automates Build→Test→Deploy→Monitor (via Grafana/Instana), that pipeline is your DevOps SDLC in action — good concrete example to cite in interviews.
