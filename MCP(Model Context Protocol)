@@ -61,7 +61,45 @@ kamalesh parthiban@kamalesh MINGW64 ~
 $ npx -v
 11.16.0
 
-Correct — that was a dead end. Since Claude Desktop is installed as a Windows Store (MSIX) app, it actually reads its config from:
+@kud/mcp-jenkins@latest
+kubernetes-mcp-server@latest
+@modelcontextprotocol/server-github
+
+is all three anre npm packages?
+
+Yes — all three are npm packages, published on npmjs.com (npm's public registry).
+
+npm/npx is to Node.js what yum is to RHEL/CentOS — a package manager that fetches and installs software from a central registry.
+
++----------------------------------------+---------------------------------------------------------------+
+| RHEL world                             | Node.js world                                                 |
++----------------------------------------+---------------------------------------------------------------+
+| yum install nginx                      | npm install -g package-name                                  |
++----------------------------------------+---------------------------------------------------------------+
+| Registry: RHEL/EPEL repos              | Registry: npmjs.com (npm's public registry)                  |
++----------------------------------------+---------------------------------------------------------------+
+| Installs permanently                   | npm install -g = permanent; npx = temporary, one-time run    |
++----------------------------------------+---------------------------------------------------------------+
+| rpm -qa (list installed)               | npm list -g (list installed)                                 |
++----------------------------------------+---------------------------------------------------------------+
+
+• When Claude Desktop ran npx -y package-name, it fetched that package from
+  npmjs.com's servers, downloaded it temporarily, and executed it
+  — similar to yum install pulling from a repo, except npx doesn't leave it
+  permanently installed (each restart re-fetches, though npm caches it
+  locally so it's fast after the first time).
+
+One more parallel worth noting, given your Docker background:
+
+• npx behaves a bit like docker run
+  (ephemeral, runs and can be discarded)
+
+• npm install -g behaves more like yum install
+  (persists on the system)
+
+========================
+
+5. Correct — that was a dead end. Since Claude Desktop is installed as a Windows Store (MSIX) app, it actually reads its config from:
 
 C:\Users\kamalesh parthiban\AppData\Local\Packages\Claude_pzs8sxrjxfjjc\LocalCache\Roaming\Claude\claude_desktop_config.json
 
@@ -74,9 +112,7 @@ Claude Desktop shows "No servers added", meaning it didn't pick up your manually
 
 Best fix: use the "Edit Config" button directly (this guarantees you're editing the exact file Claude Desktop reads):
 
-That's the real config file — it's a completely different path than the one we edited earlier (Windows Store/MSIX apps sandbox their AppData into a Packages\...\LocalCache\Roaming folder instead of the plain Roaming folder). That's why your edits didn't apply.
-
-Don't overwrite this file — it has existing settings. We need to add the mcpServers key alongside what's already there.
+That's the real config file 
 
 Step 1: Scroll to the very end of this file in VS Code to see the last few lines (so we know where to insert correctly). Can you scroll down and screenshot the bottom of the file (the closing })?
 
