@@ -377,9 +377,16 @@ Step 3: Add the AWS MCP server to your config
 
 Open claude_desktop_config.json via Settings → Developer → Edit Config, add alongside kubernetes/github/jenkins:
 
-"aws": {
-  "command": "npx",
-  "args": ["-y", "@aws-mcp/server-aws"]
+{
+  "mcpServers": {
+    "aws": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@yawlabs/aws-mcp@latest"
+      ]
+    }
+  }
 }
 
 Step 4: Save, fully quit Claude Desktop (Task Manager check), reopen
@@ -390,6 +397,11 @@ Settings → Developer → Local MCP servers — should show "aws" listed
 Step 6: Test with something safe first (read-only)
 
 List all EC2 instances in my account
+
+Here's your EC2 instance in the default profile/account (checked in us-east-1):
+
+Instance ID        	Name	     Type	         State	AZ	          Private IP   	Public IP
+i-02db2eb7e5081c7b8	jenkins	c7i-flex.large	stopped	us-east-1c	172.31.30.78	   —
 
 Step 7: Once confirmed working, try creating
 
