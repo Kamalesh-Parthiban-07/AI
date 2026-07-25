@@ -9,6 +9,29 @@ version, the weights are frozen and don't change during use. Your phrasing is co
 2. "Not from human data alone" — a small addition if you want completeness: most AI (like LLMs) learns from human-generated data, but some AI (like AlphaGo) learns 
 via self-play/simulation instead. Not required for your summary, just good to know if this comes up in an interview.
 
+Here's a clear, accurate comparison of what each one can actually generate:
+
++------------------------------------+-------------------------------+----------------------------------+------------------------------------------------------+
+| Capability                         | Claude (me)                   | ChatGPT                          | Llama3 (local, base)                                 |
++------------------------------------+-------------------------------+----------------------------------+------------------------------------------------------+
+| Text                               | Yes                           | Yes                              | Yes                                                  |
++------------------------------------+-------------------------------+----------------------------------+------------------------------------------------------+
+| Code                               | Yes                           | Yes                              | Yes                                                  |
++------------------------------------+-------------------------------+----------------------------------+------------------------------------------------------+
+| Images (actual pixel-based)        | No                            | Yes (via DALL·E integration)     | No (needs a separate model added)                    |
++------------------------------------+-------------------------------+----------------------------------+------------------------------------------------------+
+| Diagrams/charts (as code           | Yes                           | Yes (can write similar code)     | Yes (can write similar code, quality varies)         |
+| — SVG/HTML)                        |                               |                                  |                                                      |
++------------------------------------+-------------------------------+----------------------------------+------------------------------------------------------+
+| Voice/audio generation             | No                            | Yes (ChatGPT app has             | No (not built-in)                                    |
+|                                    |                               | voice mode)                      |                                                      |
++------------------------------------+-------------------------------+----------------------------------+------------------------------------------------------+
+| Web search                         | Yes (when enabled)            | Yes (when enabled)               | No (fully offline, no internet access at all)        |
++------------------------------------+-------------------------------+----------------------------------+------------------------------------------------------+
+| File creation (docs,               | Yes                           | Yes (varies by plan)             | No (would need custom scripting, like we did with    |
+| spreadsheets, PDFs)                |                               |                                  | rag.py)                                              |
++------------------------------------+-------------------------------+----------------------------------+------------------------------------------------------+
+
 ----------------------------------------------------------------------------------------------------------
 | AlphaGo                                                      | Llama3 / Claude                         |
 |--------------------------------------------------------------|-----------------------------------------|
