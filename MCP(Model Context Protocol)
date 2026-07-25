@@ -242,3 +242,54 @@ Save the file, then quit Claude Desktop fully (Task Manager) and reopen.
 ----------------------------------------------------------------
 Jenkins
 ---------------
+Yes — there are MCP servers for Jenkins too, relevant given your Jenkins pipeline
+work at GlobalPayments.
+
+Architected Jenkins integration paralleling GitHub's MCP setup process.
+
+Yes — Jenkins has MCP support too, and this one's directly relevant to your
+GlobalPayments Jenkins pipeline work.
+
+Simplest option (npx-based, similar to what we did for Kubernetes/GitHub):
+
+There's an actively maintained one, kud/mcp-jenkins, that covers roughly 95%
+of the Jenkins API — jobs, builds, nodes, views, queue, plugins, and system
+operations, with zero-install usage via npx.
+
+Setup steps:
+
+1. Generate a Jenkins API token:
+
+   • Log into Jenkins -> click your username (top right) -> Configure
+
+   • Under API Token -> Add new Token -> Generate
+
+   • Copy it immediately
+
+Edit the same config file (Edit Config in Settings → Developer):
+
+"mcpServers": {
+  "kubernetes": {
+    "command": "npx",
+    "args": ["-y", "kubernetes-mcp-server@latest"],
+    "env": {
+      "KUBECONFIG": "C:\\Users\\kamalesh parthiban\\.kube\\config"
+    }
+  },
+  "github": {
+    "command": "npx",
+    "args": ["-y", "@modelcontextprotocol/server-github"],
+    "env": {
+      "GITHUB_PERSONAL_ACCESS_TOKEN": "your_github_token_here"
+    }
+  },
+  "jenkins": {
+    "command": "npx",
+    "args": ["-y", "@kud/mcp-jenkins@latest"],
+    "env": {
+      "JENKINS_URL": "http://107.20.118.73:8080",
+      "JENKINS_USER": "kamalesh",
+      "JENKINS_API_TOKEN": "your_jenkins_token_here"
+    }
+  }
+}
