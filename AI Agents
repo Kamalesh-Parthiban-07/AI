@@ -1,0 +1,57 @@
+AI
+│
+└── Machine Learning
+    │
+    ├── Supervised Learning
+    ├── Unsupervised Learning
+    ├── Reinforcement Learning
+    ├── Semi-supervised Learning
+    └── Deep Learning
+        │
+        ├── Generative AI (GenAI)
+        │   │
+        │   └── AI Agents
+        │
+        ├── Computer Vision
+        ├── Natural Language Processing (NLP)
+        ├── Speech Recognition
+        └── Recommendation Systems
+
+AI Agents are AI systems that autonomously plan and take multi-step actions using tools to achieve a goal — not just answering once, but observing results and deciding next steps on their own. 
+What you built today (Claude + Kubernetes/GitHub/Jenkins MCP servers) is a real example — Claude acts as the "brain," MCP tools as the "hands."
+
+Most practical/interview-relevant framing for your work specifically:
+
+"Today's AI agents (like Claude with MCP, or GitHub Copilot Workspace) are best understood as LLM-based agentic systems — they combine an LLM's reasoning with tool access to autonomously plan and 
+execute tasks, which is a more modern evolution beyond the classic 'goal-based' or 'utility-based' agent categories from traditional AI theory."
+
+1. Simple Reflex Agents
+
+• Acts only on the current input, no memory of past actions — pure "if-this-then-that" reaction.
+• Example: A thermostat — "if temp > threshold, turn on AC" — no learning, no memory.
+
+2. Model-Based Reflex Agents
+
+• Keeps an internal "model" of the world, so it accounts for things it can't directly observe right now.
+• Example: A robot vacuum that remembers the room layout, avoiding areas it already cleaned.
+
+3. Goal-Based Agents
+
+• Doesn't just react — considers future outcomes and picks actions that move toward a specific goal.
+• Example: A navigation system choosing the best route toward a destination, considering multiple paths.
+
+4. Utility-Based Agents
+
+• Like goal-based, but also weighs trade-offs — picks the action that maximizes overall "value/utility," not just any path to the goal.
+• Example: Choosing a route that balances speed AND cost AND safety, not just the shortest path.
+
+5. Learning Agents
+
+• Improves its performance over time based on feedback/experience — this is where Reinforcement Learning agents (like AlphaGo) fit.
+• Example: AlphaGo improving its strategy after each game played.
+
+6. LLM-based / Agentic AI (the modern category — most relevant today)
+
+• Uses an LLM as the "reasoning brain," combined with tool access, to autonomously plan and execute multi-step tasks.
+• Example: Claude + Kubernetes + GitHub + Jenkins + AWS MCP servers.
+
