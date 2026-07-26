@@ -1,6 +1,8 @@
 Machine Learning (ML) is a subset of AI where systems learn patterns from data instead of being explicitly programmed with fixed rules — the model improves its predictions by being trained on 
 examples, rather than someone writing if-else logic for every case.
 
+ML is a set of algorith
+
 Machine learning is the process of teaching computers to learn from data so they can make predictions or decision without being explicitly programmed for every situation.
 
 Where it fits in what we discussed earlier:
@@ -126,4 +128,72 @@ Now, mapping ML types to the data they typically work with:
 | Semi-supervised Learning       | Both — commonly used when you have a little labeled + lots of unlabeled unstructured data (e.g., few labeled medical images + many unlabeled ones)|
 | Self-supervised Learning (LLMs)| Almost always unstructured data — raw text (Llama3/Claude training), images, audio                                                                |
 
+------------------
 
+# 1. Supervised Learning Algorithms
+
+| **Algorithm**                                      | **Common Use**                                                                 |
+|----------------------------------------------------|--------------------------------------------------------------------------------|
+| **Linear Regression**                              | Predicting continuous values (price, demand)                                   |
+| **Logistic Regression**                            | Binary classification (fraud/not fraud, spam/not spam)                         |
+| **Decision Trees**                                 | Classification and regression with interpretable decision rules                |
+| **Random Forest**                                  | Ensemble of decision trees for improved accuracy                               |
+| **Support Vector Machines (SVM)**                  | Classification, especially when classes have clear margins                     |
+| **Naive Bayes**                                    | Text classification, spam filtering                                            |
+| **K-Nearest Neighbors (KNN)**                      | Classification based on the nearest data points                                |
+| **Gradient Boosting (XGBoost, LightGBM, CatBoost)**| High-accuracy prediction for structured/tabular data; widely used in industry  |
+| **Neural Networks (Supervised Mode)**              | Complex pattern recognition (e.g., image classification, speech recognition)   |
+
+# 2. Unsupervised Learning Algorithms
+
+| **Algorithm**                         | **Common Use**                                                              |
+|---------------------------------------|-----------------------------------------------------------------------------|
+| **K-Means Clustering**                | Groups similar data points (e.g., customer segmentation)                    |
+| **Hierarchical Clustering**           | Creates nested groups of data; visualized using dendrograms                 |
+| **DBSCAN**                            | Density-based clustering; effective for anomaly and outlier detection        |
+| **Principal Component Analysis (PCA)**| Reduces data dimensions while preserving important information              |
+| **Autoencoders**                      | Data compression and anomaly detection (also used in deep learning)          |
+| **Association Rule Learning (Apriori)** | Discovers relationships such as "People who bought X also bought Y"       |
+| **Gaussian Mixture Models (GMM)**     | Probabilistic clustering that models data as a mixture of Gaussian distributions |
+
+# 3. Reinforcement Learning Algorithms
+
+| **Algorithm**                        | **Common Use**                                                              |
+|--------------------------------------|-----------------------------------------------------------------------------|
+| **Q-Learning**                       | Basic value-based reinforcement learning; learns action–value (Q-value) pairs |
+| **Deep Q-Networks (DQN)**            | Combines Q-learning with deep learning; widely used in Atari-playing AI     |
+| **Policy Gradient Methods**          | Directly learns the optimal action policy                                   |
+| **Proximal Policy Optimization (PPO)** | A widely used modern RL algorithm; used in RLHF for models like ChatGPT     |
+| **Actor-Critic Methods**             | Combines value-based and policy-based reinforcement learning approaches     |
+| **Monte Carlo Tree Search (MCTS)**   | Used in AlphaGo for game-tree exploration and planning                      |
+
+---
+
+# 4. Semi-supervised Learning Algorithms
+
+| **Algorithm**                              | **Common Use**                                                          |
+|--------------------------------------------|-------------------------------------------------------------------------|
+| **Self-training (Pseudo-labeling)**        | Model generates labels for unlabeled data and retrains using them       |
+| **Label Propagation**                      | Spreads labels from labeled data to nearby unlabeled data points        |
+| **Semi-supervised Support Vector Machine (S3VM)** | Extends SVM to learn from both labeled and unlabeled data          |
+| **Generative Adversarial Networks (Semi-supervised GANs)** | GANs adapted to learn with partially labeled datasets |
+
+# 5. Self-supervised Learning Algorithms
+
+| **Algorithm**                     | **Common Use**                                                                 |
+|-----------------------------------|--------------------------------------------------------------------------------|
+| **Masked Language Modeling (MLM)** | BERT-style training; predicts masked or hidden words in a sentence            |
+| **Next Token/Word Prediction**     | GPT/Llama-style training; predicts the next word/token (used to train Llama 3, Claude, ChatGPT) |
+| **Contrastive Learning (SimCLR, CLIP)** | Learns representations by comparing similar and dissimilar pairs; widely used in image-text models |
+| **Autoregressive Pretraining**     | Core technique behind LLMs; generates text one token at a time based on previously generated tokens |
+
+---
+
+# Important Interview Point
+
+> **PPO (Proximal Policy Optimization)**, a **Reinforcement Learning** algorithm, is used during the final training stage of models like **ChatGPT** and **Claude** through a process called **RLHF (Reinforcement Learning from Human Feedback)**.
+>
+> This means modern **LLMs combine two Machine Learning paradigms**:
+>
+> - **Self-supervised Learning** → Initial large-scale pretraining on massive text datasets.
+> - **Reinforcement Learning (RLHF using PPO)** → Final fine-tuning stage to align the model's behavior with human preferences and produce more helpful, safe, and accurate responses.
