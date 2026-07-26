@@ -1,0 +1,13 @@
+AI + DevOps (commonly called "AIOps") — using machine learning to automate and improve operations tasks that traditionally needed manual human judgment.
+
+Where AI fits across your actual stack:
+
+| DevOps Area                        | AI Use Case                                                                                 | ML Type Used                  |
+|------------------------------------|---------------------------------------------------------------------------------------------|-------------------------------|
+| Monitoring (Grafana/Prometheus)    | Anomaly detection — flag unusual metric patterns automatically instead of static thresholds | Unsupervised Learning         |
+| Autoscaling (Karpenter/HPA)        | Predictive scaling — scale nodes/pods before load hits, based on historical patterns        | Supervised Learning           |
+| Log analysis (Loki)                | Auto-clustering similar errors, root-cause suggestion                                       | Unsupervised / Supervised     |
+| CI/CD (Jenkins)                    | Predicting build failures before they happen, flaky test detection                          | Supervised Learning           |
+| Incident response                  | Auto-suggesting remediation steps based on past incidents                                   | Supervised Learning           |
+| Security scanning (Snyk/SonarQube/Sysdig) | Detecting anomalous behavior patterns beyond known signatures                        | Supervised / Unsupervised     |
+| ChatOps (what you built today)     | Natural language interface to your infra (Claude + MCP)                                     | LLM (inference, not training) |
