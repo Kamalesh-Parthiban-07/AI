@@ -130,6 +130,8 @@ Now, mapping ML types to the data they typically work with:
 
 ------------------
 
+Algorithm is a step-by-step method or a set of instructions to solve a problem.
+
 # 1. Supervised Learning Algorithms
 
 | **Algorithm**                                      | **Common Use**                                                                 |
