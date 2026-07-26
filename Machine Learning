@@ -105,8 +105,24 @@ This is like a reinforcement learning. An agent learns by interacting with the e
 
 5. self-supervised learning
 
-LLM training (like Llama3/Claude) is mostly a form of self-supervised learning — a variant where the data "labels itself." For text, the model predicts the next word in a sentence, using the 
-actual next word as the "label" — no human manually labeled billions of sentences; the structure of language itself provides the training signal.
+# Self-supervised Learning — Objectives/Tasks (Not Algorithms)
+
+| **Objective / Task**               | **What It Does**                                                                           |
+|------------------------------------|--------------------------------------------------------------------------------------------|
+| **Next Token/Word Prediction**     | Predicts the next word or token given the previous words (GPT/Llama/Claude style)          |
+| **Masked Language Modeling (MLM)** | Predicts a hidden or masked word using the surrounding context (BERT style)                |
+| **Contrastive Learning**           | Learns representations by comparing similar and dissimilar data pairs (e.g., CLIP, SimCLR) |
+
+---
+
+# The Actual Algorithms Used to Train Models for All of These Objectives
+
+| **Algorithm**                            | **Role**                                                                                   |
+|------------------------------------------|--------------------------------------------------------------------------------------------|
+| **Gradient Descent (+ Backpropagation)** | Core optimization method that adjusts model weights, regardless of the objective (next-token prediction, masked language modeling, or contrastive learning) |
+| **Adam Optimizer** *(a variant of Gradient Descent)* | The most commonly used optimizer for training modern LLMs efficiently |
+
+--------------------------------------------------------
 
 Simple summary table:
 
