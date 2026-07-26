@@ -1,0 +1,83 @@
+"The input prompt goes through tokenization (splitting into tokens), then embedding (converting tokens into numerical vectors), then the Transformer processes these vectors using (self-attention) 
+to understand context, and finally generates a response through next-token prediction — this whole process is called LLM inference."
+
+Step 1: Tokenization (breaking your sentence into pieces)
+
+Your prompt "What is machine learning" gets split into tokens — not always whole words, sometimes sub-words or even single characters, depending on the tokenizer used.
+
+"What is machine learning"
+        ↓
+["What", " is", " machine", " learning"]
+
+Important nuance: the diagram simplifies it. Tokens aren't always clean whole words like shown. For example:
+
+"understanding" might become:
+["under", "stand", "ing"]
+
+This is because the tokenizer (like BPE — Byte Pair Encoding) breaks text into common sub-word chunks, so it can handle ANY word (even made-up ones) without needing every possible word pre-defined.
+
+------------------------------------------------------------
+
+Step 2: Token → Number (Token ID)
+
+Each token gets mapped to a fixed number from the model's vocabulary (a lookup table built during training):
+
+"What"      → 4013
+" is"       → 318
+" machine"  → 4572
+" learning" → 6509
+
+------------------------------------------------------------
+
+Step 3: Number → Embedding Vector
+
+(This is what the diagram shows as [0.23, -0.45, 1.20...])
+
+Each Token ID gets converted into a vector — a list of hundreds/thousands of numbers that represent that word's meaning in mathematical space (similar to what you did with nomic-embed-text in your RAG project).
+
+"What" → [0.23, -0.45, 1.20, ...]
+         (e.g., 768 or 4096 numbers, depending on model size)
+
+------------------------------------------------------------
+
+Step 4: "Real LLM starts working"
+
+This is the Transformer processing these vectors through many layers, using self-attention (figuring out which words relate to which other words), ultimately predicting the next token, converting it back to a word, and repeating.
+
+-------------------------------------------
+
+Breaking down each specific step's name:
+
++---------------------------------------------------------------+---------------------------------------------------------------+
+| Step                                                          | Name of the process                                            |
++---------------------------------------------------------------+---------------------------------------------------------------+
+| Text → Tokens (breaking sentence into pieces)                 | Tokenization                                                   |
+|                                                               |                                                               |
+| Token → Token ID (number lookup)                              | Encoding (or "vocabulary lookup")                             |
+|                                                               |                                                               |
+| Token ID → Vector of numbers                                  | Embedding (specifically, this creates a "token embedding"      |
+|                                                               | or "word embedding")                                          |
+|                                                               |                                                               |
+| Vectors flowing through Transformer layers,                   | Self-Attention (the core mechanism of the Transformer          |
+| understanding relationships between words                     | architecture)                                                 |
+|                                                               |                                                               |
+| Final vector → Predicting the next token                      | Decoding (or "generation")                                    |
++---------------------------------------------------------------+---------------------------------------------------------------+
+
+Neural Network (the overall structure)
+   └── Transformer architecture (a specific TYPE of neural network)
+         └── Self-Attention (the KEY mechanism INSIDE the Transformer)
+
+Precise breakdown:
+
++------------------+---------------------------------------------------------------------------------------------+
+| Component        | What it is                                                                                  |
++------------------+---------------------------------------------------------------------------------------------+
+| Neural Network   | The broad category — layers of interconnected "neurons" (nodes) that process numbers.      |
+|                  |                                                                                             |
+| Transformer      | A specific type of neural network architecture, invented in 2017, built specifically        |
+|                  | around self-attention.                                                                      |
+|                  |                                                                                             |
+| Self-Attention   | The specific mechanism inside the Transformer that lets the model figure out which words    |
+|                  | in a sentence relate to each other, and how strongly.                                       |
++------------------+---------------------------------------------------------------------------------------------+
