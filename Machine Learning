@@ -215,3 +215,67 @@ Algorithm is a step-by-step method or a set of instructions to solve a problem.
 >
 > - **Self-supervised Learning** → Initial large-scale pretraining on massive text datasets.
 > - **Reinforcement Learning (RLHF using PPO)** → Final fine-tuning stage to align the model's behavior with human preferences and produce more helpful, safe, and accurate responses.
+------------------------------------------------------------------------------------------------------------------------
+Pandas and NumPy
+------------------------------
+Pandas and NumPy are two core Python libraries used heavily in data science/ML — you'd have brushed against these if you go deeper into ML work.
+
+
+# NumPy (Numerical Python)
+
+- Efficiently handles **arrays** and **numerical computations**.
+- Much faster than standard Python lists for mathematical operations.
+- Serves as the **foundation** for most Machine Learning and data science libraries, including **Pandas**, **SciPy**, **scikit-learn**, and more.
+
+### Example
+
+```python
+import numpy as np
+
+arr = np.array([1, 2, 3, 4])
+print(arr * 2)   # Output: [2, 4, 6, 8]
+# Fast, vectorized mathematical operations
+```
+
+---
+
+# Pandas
+
+- Built on top of **NumPy**.
+- Introduces **DataFrames**, which are similar to Excel spreadsheets with rows, columns, labels, and powerful filtering/grouping capabilities.
+- Primarily used for **cleaning**, **exploring**, **transforming**, and **manipulating** structured (tabular) data.
+
+### Example
+
+```python
+import pandas as pd
+
+df = pd.read_csv("transactions.csv")
+print(df[df["amount"] > 10000])   # Filter rows like an Excel filter
+```
+
+---
+
+# Where NumPy and Pandas Fit in the Machine Learning Workflow
+
+```text
+Raw Data
+(CSV files, transaction logs, databases, etc.)
+            │
+            ▼
+Load, Clean, and Explore Data
+using Pandas + NumPy
+            │
+            ▼
+Preprocessed / Clean Data
+            │
+            ▼
+Train ML Algorithm
+(scikit-learn, TensorFlow, PyTorch, etc.)
+            │
+            ▼
+Trained Machine Learning Model
+```
+
+Practical relevance for you: if you ever build a classic ML model (e.g., fraud detection using structured transaction data, not an LLM), Pandas/NumPy would be your first tools — loading the CSV, cleaning it, exploring it — before feeding it into an actual ML algorithm (like scikit-learn's Random Forest or XGBoost).
+
