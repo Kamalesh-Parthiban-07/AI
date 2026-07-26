@@ -1,6 +1,8 @@
 "The input prompt goes through tokenization (splitting into tokens), then embedding (converting tokens into numerical vectors), then the Transformer processes these vectors using (self-attention) 
 to understand context, and finally generates a response through next-token prediction — this whole process is called LLM inference."
 
+Text → Tokens → Token IDs (numbers) → Embedding vectors (meaning as numbers) → Transformer processes these vectors → predicts next token → repeats to generate a response.
+
 Step 1: Tokenization (breaking your sentence into pieces)
 
 Your prompt "What is machine learning" gets split into tokens — not always whole words, sometimes sub-words or even single characters, depending on the tokenizer used.
