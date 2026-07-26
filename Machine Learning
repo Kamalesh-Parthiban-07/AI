@@ -8,3 +8,58 @@ AI
        └── Deep Learning
              └── LLM (Llama3, Claude, ChatGPT)
 
+training an LLM is also machine learning?
+
+Yes — exactly right. Training an LLM is machine learning, specifically a more advanced/deep branch of it.
+
+AI
+ └── Machine Learning
+       └── Deep Learning (uses neural networks with many layers)
+             └── LLM training (deep learning applied specifically to language)
+                   └── Llama3 / Claude / ChatGPT (the resulting trained models)
+
+Deep Learning
+ ├── CNNs (Convolutional Neural Networks) → Face unlock, image recognition
+ ├── RNNs/Transformers for audio → Voice assistants (speech-to-text)
+ ├── Neural collaborative filtering → Recommendation engines
+ └── LLMs (transformer architecture, trained on TEXT specifically) → Llama3, Claude, ChatGPT
+
+To be precise about the "Deep Learning" layer in between:
+LLM training specifically uses deep learning — neural networks with many stacked layers (in this case, a "transformer" architecture) — which is why it sits one level deeper than general ML in the 
+hierarchy. Not all machine learning is deep learning (e.g., a simple fraud-detection decision tree is ML but NOT deep learning), but all LLM training is both ML and deep learning.
+
+Machine Learning (broad)
+ ├── Classic ML (decision trees, regression, clustering — simpler, no neural networks)
+ └── Deep Learning (neural networks with many layers)
+       └── LLMs (Llama3, Claude, ChatGPT)
+
+Classic ML (NOT deep learning) — simpler algorithms, no neural networks:
+
+| Example                                      | Technique                                  |
+|----------------------------------------------|--------------------------------------------|
+| Decision trees (loan approval)               | Decision tree algorithm                    |
+| Linear regression (house price prediction)   | Statistical regression                     |
+| Customer segmentation/clustering             | Clustering algorithms (k-means, etc.)      |
+| Simple/older spam filters                    | Naive Bayes, logistic regression           |
+
+
+Deep Learning (a SUBSET of ML — uses neural networks with many layers):
+
+| Example                                      | Why it's deep learning                                                |
+|----------------------------------------------|------------------------------------------------------------------------------------------------------------------|
+| Face unlock                                  | Uses convolutional neural networks (CNNs) to recognize facial patterns — genuinely deep learning                 |
+| Voice assistants (Siri/Alexa)                | Speech-to-text uses deep neural networks (often transformer-based now)                                           |
+| Modern Netflix/YouTube recommendations       | Often uses deep neural networks now, though simpler versions use classic ML too — depends on the company's system|
+| LLMs (Llama3, Claude, ChatGPT)               | Deep learning specifically (transformer architecture)                                                            |
+
+
+Why they're different, specifically:
+
+| System                    | What it processes                              | Is it an LLM?                                                                                                                                                                           |
+|---------------------------|------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Face unlock               | Images (pixels)                                | No — uses CNNs, built for image recognition, not language                                                                                                                               |
+| Voice assistants          | Audio waveforms → converts to text             | No — uses speech-recognition-specific neural networks (though the response generation part of Siri/Alexa might use an LLM-like component today, the voice recognition itself isn't one) |
+| Recommendation engines    | User behavior data (clicks, watch history)     | No — uses recommendation-specific neural networks, not language models                                                                                                                  |
+| Llama3/Claude/ChatGPT     | Text                                           | Yes — specifically designed and trained to understand/generate language                                                                                                                 |
+
+
