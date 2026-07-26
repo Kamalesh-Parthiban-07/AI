@@ -87,6 +87,8 @@ Machine Learning has 5 main types, categorized by how the model learns from data
 
 3. Reinforcement Learning — learns by trial and error, using rewards/penalties (no labeled data at all)
 
+This is like a reinforcement learning. An agent learns by interacting with the environment and receiving the rewards or penalties.
+
 | Example                                      | What it does                                                         |
 |---------------------------------------------|-----------------------------------------------------------------------|
 | AlphaGo (from our earlier discussion)        | Plays millions of games against itself, learns from win/loss rewards |
