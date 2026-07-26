@@ -62,4 +62,52 @@ Why they're different, specifically:
 | Recommendation engines    | User behavior data (clicks, watch history)     | No — uses recommendation-specific neural networks, not language models                                                                                                                  |
 | Llama3/Claude/ChatGPT     | Text                                           | Yes — specifically designed and trained to understand/generate language                                                                                                                 |
 
+---------------------------
+Types of ML
 
+Machine Learning has 5 main types, categorized by how the model learns from data:
+
+1. Supervised Learning — learns from labeled data (input + correct answer given)
+
+| Example                | Input                 | Label                      |
+|------------------------|-----------------------|----------------------------|
+| Fraud detection        | Transaction details   | "Fraud" or "Not fraud"     |
+| Spam filter            | Email content         | "Spam" or "Not spam"       |
+| House price prediction | Size, location        | Actual sale price          |
+
+
+2. Unsupervised Learning — learns patterns from unlabeled data (no "correct answer" given, just finds structure)
+
+| Example                                      | What it does                                                   |
+|---------------------------------------------|-----------------------------------------------------------------|
+| Customer segmentation                        | Groups customers by behavior, without being told the groups    |
+| Anomaly detection (Grafana/Prometheus-style) | Learns "normal" patterns, flags anything unusual               |
+| Topic modeling                               | Groups similar documents/articles together automatically       |
+
+
+3. Reinforcement Learning — learns by trial and error, using rewards/penalties (no labeled data at all)
+
+| Example                                      | What it does                                                         |
+|---------------------------------------------|-----------------------------------------------------------------------|
+| AlphaGo (from our earlier discussion)        | Plays millions of games against itself, learns from win/loss rewards |
+| Self-driving cars                            | Learns driving decisions through simulated trial and error           |
+| Robotics                                     | Learns to walk/grasp objects through repeated attempts + rewards     |
+
+4. Semi-supervised Learning — mix of labeled + unlabeled data (small amount labeled, large amount unlabeled)
+
+• Common when labeling data is expensive/time-consuming — model learns from a small labeled set, then generalizes to the larger unlabeled set.
+
+5. self-supervised learning
+
+LLM training (like Llama3/Claude) is mostly a form of self-supervised learning — a variant where the data "labels itself." For text, the model predicts the next word in a sentence, using the 
+actual next word as the "label" — no human manually labeled billions of sentences; the structure of language itself provides the training signal.
+
+Simple summary table:
+
+| Type                      | Needs labels?        | Example                                           |
+|---------------------------|----------------------|---------------------------------------------------|
+| Supervised                | Yes                  | Fraud detection                                   |
+| Unsupervised              | No                   | Customer segmentation                             |
+| Reinforcement             | No (uses rewards)    | AlphaGo                                           |
+| Semi-supervised           | Partial              | Medical image classification (few labeled scans)  |
+| Self-supervised (LLMs)    | Data labels itself   | Llama3, Claude, ChatGPT                           |
