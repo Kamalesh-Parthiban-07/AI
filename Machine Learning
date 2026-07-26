@@ -111,3 +111,15 @@ Simple summary table:
 | Reinforcement             | No (uses rewards)    | AlphaGo                                           |
 | Semi-supervised           | Partial              | Medical image classification (few labeled scans)  |
 | Self-supervised (LLMs)    | Data labels itself   | Llama3, Claude, ChatGPT                           |
+
+Now, mapping ML types to the data they typically work with:
+
+| ML Type                        | Typically works with                                                                                                                              |
+|--------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------|
+| Supervised Learning            | Mostly structured data (e.g., fraud detection using transaction tables) — though it can also work on unstructured data (labeled images/text)      |
+| Unsupervised Learning          | Both — but often used to find patterns in structured data (e.g., customer segmentation from spreadsheets)                                         |
+| Reinforcement Learning         | Neither really — works with sequential decisions/actions, not stored data at all (learns via simulation/interaction)                              |
+| Semi-supervised Learning       | Both — commonly used when you have a little labeled + lots of unlabeled unstructured data (e.g., few labeled medical images + many unlabeled ones)|
+| Self-supervised Learning (LLMs)| Almost always unstructured data — raw text (Llama3/Claude training), images, audio                                                                |
+
+
