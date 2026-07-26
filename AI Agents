@@ -20,6 +20,9 @@ AI
 AI Agents are AI systems that autonomously plan and take multi-step actions using tools to achieve a goal — not just answering once, but observing results and deciding next steps on their own. 
 What you built today (Claude + Kubernetes/GitHub/Jenkins MCP servers) is a real example — Claude acts as the "brain," MCP tools as the "hands."
 
+An AI agent doesn't just generate text output — it takes real actions using tools (APIs, MCP servers, scripts) to actually do something in the real world: query a database, create an EC2 instance, 
+restart a pod, open a GitHub PR, etc.
+
 Most practical/interview-relevant framing for your work specifically:
 
 "Today's AI agents (like Claude with MCP, or GitHub Copilot Workspace) are best understood as LLM-based agentic systems — they combine an LLM's reasoning with tool access to autonomously plan and 
