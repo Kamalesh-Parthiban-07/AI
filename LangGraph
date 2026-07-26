@@ -1,5 +1,17 @@
 You likely mean LangGraph — a framework for building AI agents, built by the LangChain team.
 
+is langrah is python module
+
+Yes — LangGraph is a Python package/module, installable via pip, same as langchain or chromadb.
+
+Quick facts:
+
+pip install langgraph
+
+Yes — you can absolutely import LangGraph into your rag-project (or any new project), same pattern as everything else you've done today.
+
+from langgraph.graph import StateGraph
+
 What it is:
 LangGraph lets you build multi-step, stateful AI agents as a graph of nodes (steps) and edges (connections) — instead of a simple one-shot LLM call, you define a workflow where the agent can loop, branch, retry, and make decisions across multiple steps.
 
