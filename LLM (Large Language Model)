@@ -2,6 +2,9 @@ Yes — Claude and ChatGPT are both LLMs (Large Language Models) — AI systems 
 human-like language. Claude is made by Anthropic, ChatGPT by OpenAI. Different companies, different training data/approach, but same 
 underlying category of technology.
 
+A Large Language Model is a neural network (specifically, a Transformer architecture) trained on massive amounts of text data. It has billions of parameters — these are the learned 
+weights/values that encode patterns from training. When you ask ChatGPT/Claude/Llama3 a question, it uses these learned patterns to predict the next word, repeatedly, generating a full response.
+
 Can you create your own LLM? Depends what you mean by "own":
 
 | Approach                          | What it means                                                                          | Feasibility for you                                                                                          |
