@@ -1,0 +1,21 @@
+The DevOps lifecycle is typically described as a continuous loop of 7 phases:
+
+1. Plan – Define requirements, features, and roadmap. Teams use tools like Jira or Azure Boards to break work into sprints/backlogs.
+
+2. Code – Developers write application code, following version control practices (Git branching strategies, code reviews, pull requests).
+
+3. Build – Source code is compiled/packaged into deployable artefacts. This is where Jenkins, GitHub Actions, or similar CI tools kick in — running builds, generating Docker images, etc.
+
+4. Test – Automated testing (unit, integration, security scans) runs against the build. This is where tools like SonarQube, Snyk, Checkmarx fit in — sounds like your [luigi-shared-library] pipeline stages at GlobalPayments.
+
+5. Release – The artefact is approved and versioned for deployment, often gated by manual approvals or automated quality gates.
+
+6. Deploy – The release is pushed to production infrastructure — this is your ArgoCD/EKS territory, using strategies like Blue/Green or Canary (ALB weighted target groups, which you've worked with).
+
+7. Operate & Monitor – Post-deployment, teams observe system health and performance — your Grafana Cloud stack (Alloy, Loki, Prometheus/Mimir) and Instana tracing live here. Feedback loops back into Plan, closing the cycle.
+
+A quick way to remember it:
+
+Plan → Code → Build → Test → Release → Deploy → Operate & Monitor
+
+Often drawn as an infinity loop to emphasise it's continuous, not linear.
