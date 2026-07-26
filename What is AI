@@ -9,6 +9,9 @@ version, the weights are frozen and don't change during use. Your phrasing is co
 2. "Not from human data alone" — a small addition if you want completeness: most AI (like LLMs) learns from human-generated data, but some AI (like AlphaGo) learns 
 via self-play/simulation instead. Not required for your summary, just good to know if this comes up in an interview.
 
+Almost all LLMs you'll encounter today (Llama3, Claude, ChatGPT) ARE Generative AI — since generating text is their core purpose. But technically, "Large Language Model" as a category also includes some 
+non-generative models (like BERT), so it's not a strict 100% rule.
+
 Here's a clear, accurate comparison of what each one can actually generate:
 
 +------------------------------------+-------------------------------+----------------------------------+------------------------------------------------------+
